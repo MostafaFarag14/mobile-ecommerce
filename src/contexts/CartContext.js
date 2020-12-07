@@ -15,17 +15,17 @@ const CartProvider = ({ children }) => {
     ...calculateCartTotal(initialItems)
   })
 
-  const addProductToCart = product => {
+  const addProductToCart = (product, quantityToAdd = 1) => {
     const { items = [] } = cart
     const productIndex = items.findIndex(item => item.id === product.id)
     if (productIndex === -1) {
       items.push({
         ...product,
-        quantity: 1
+        quantity: quantityToAdd
       })
     }
     else {
-      items[productIndex].quantity++
+      items[productIndex].quantity += quantityToAdd
     }
     setCart({
       items,

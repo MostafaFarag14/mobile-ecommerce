@@ -25,7 +25,7 @@ export default function PriceMenu({ filter, setFilter }) {
         <SliderView selectedMinValue={minSelectedValue}
           selectedMaxValue={maxSelectedValue} onSliderValuesChange={onSliderValuesChange} sliderMinValue={0} sliderMaxValue={200} />
       </div>
-      <Button size='tiny' color='violet' style={{ justifySelf: 'flex-end' }} content='APPLY'
+      <Button size='tiny' color='teal' style={{ justifySelf: 'flex-end' }} content='APPLY'
 
         onClick={(e, data) => setFilter({ ...filter, priceFrom: minSelectedValue, priceTo: maxSelectedValue })} />
     </div>

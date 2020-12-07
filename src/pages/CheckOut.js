@@ -1,52 +1,53 @@
+import { useFormik, yupToFormErrors } from 'formik'
 import React, { useContext } from 'react'
-import { Table, Image, Button } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
+import CartDetail from '../components/CartDetail'
+import OrderInformationForm from '../components/OrderInformationForm'
+import * as Yup from 'yup'
 import { CartContext } from '../contexts/CartContext'
+import { addOrder, getAllProducts } from '../api/helpers'
+import { useHistory } from 'react-router-dom'
 export default function CheckOut() {
-  const { cart, removeFromCart } = useContext(CartContext)
+  const { cart } = useContext(CartContext)
+  const history = useHistory()
+  const formik = useFormik({
+    initialValues: {
+      firstname: '',
+      lastname: '',
+      email: '',
+      phonenumber: '',
+      address: ''
+    },
+    validationSchema: Yup.object().shape({
+      firstname: Yup.string().required(),
+      lastname: Yup.string().required(),
+      email: Yup.string().email().required()
+    }),
+    onSubmit: async values => {
+      const { items = [] } = cart
+      const productsIDs = items.map(product => `id_in=${product.id}`)
+      const query = productsIDs.join('&')
+      let total = 0
+      const products = await getAllProducts(query)
+      products.forEach(product => {
+        const item = items.find(item => item.id === product.id)
+        total += product.price * item.quantity
+      })
+      const order = await addOrder({
+        ...values,
+        total: `${total}`
+      })
+      history.push(`/orders/${order.code}`)
+    }
+  })
+
+  const { getFieldProps, errors, touched } = formik
   return (
     <div style={{ flex: 1, marginTop: 20 }}>
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell />
-            <Table.HeaderCell>Name</Table.HeaderCell>
-            <Table.HeaderCell>Price</Table.HeaderCell>
-            <Table.HeaderCell>Quantity</Table.HeaderCell>
-            <Table.HeaderCell>Total</Table.HeaderCell>
-            <Table.HeaderCell>Remove</Table.HeaderCell>
-
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          {
-            cart.count === 0 ?
-              <Table.Row>
-                <Table.Cell></Table.Cell>
-                <Table.Cell></Table.Cell>
-                <Table.Cell textAlign='center'>No Products In Cart</Table.Cell>
-              </Table.Row>
-              :
-              cart.items.map((product, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell textAlign='center'><img src={product.imageURL} height={50} /></Table.Cell>
-                  <Table.Cell>{product.title}</Table.Cell>
-                  <Table.Cell>{product.price}</Table.Cell>
-                  <Table.Cell>{product.quantity}</Table.Cell>
-                  <Table.Cell>{product.price * product.quantity}</Table.Cell>
-                  <Table.Cell><Button onClick={() => removeFromCart(product)} compact icon='remove' /></Table.Cell>
-                </Table.Row>
-              ))}
-        </Table.Body>
-
-        <Table.Footer>
-          <Table.Row>
-            <Table.HeaderCell>Total Amount:</Table.HeaderCell>
-            <Table.HeaderCell>{cart.total} EGP</Table.HeaderCell>
-            {[1, 2, 3, 4].map((item, index) => <Table.HeaderCell key={index} />)}
-          </Table.Row>
-        </Table.Footer>
-      </Table>
+      <CartDetail />
+      <OrderInformationForm getFieldProps={getFieldProps} errors={errors} touched={touched} />
+      <Button disabled={cart.total <= 0 || cart.items.length === 0} 
+      color='vk' content='Continue To Payment' onClick={formik.handleSubmit} />
     </div>
   )
 }

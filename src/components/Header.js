@@ -31,10 +31,9 @@ const Header = ({ setQuery }) => {
 
   }
   const { cart } = useContext(CartContext)
-  console.log(cart)
   return (
     <div>
-      <Menu style={{ padding: 10 }} compact borderless size='large' attached='top'>
+      <Menu style={{ padding: 10, boxShadow: '0 2px 5px 0 rgba(0,0,0,.08)' }} compact borderless size='large' attached='top'>
         <Container>
           <Menu.Item as={Link} to='/' name='Home' />
           <Menu.Item name='Promotions' onClick={handleItemSelect} />

@@ -8,7 +8,9 @@ import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import Item from './components/Item'
 import SortMenu from './components/SortMenu'
 import { CartProvider } from './contexts/CartContext'
+import Cart from './pages/Cart';
 import CheckOut from './pages/CheckOut';
+import Order from './pages/Order';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -39,7 +41,9 @@ function App() {
             )
             } />
             <Route path='/product/:id' component={Item} />
-            <Route path='/cart' component={CheckOut} />
+            <Route path='/cart' component={Cart} />
+            <Route path='/checkout' component={CheckOut} />
+            <Route path='/orders/:code' component={Order} /> 
           </Switch>
         </Container>
       </div>

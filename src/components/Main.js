@@ -6,10 +6,13 @@ import ProductCard from './ProductCard'
 
 export default function Main({ query }) {
   const [products, setProducts] = useState([])
- 
+
   useEffect(() => {
-    getAllProducts(query.toString())
-      .then(data => setProducts(data));
+    const fetchProducts = async () => {
+       const data = await getAllProducts(query.toString())
+       setProducts(data)
+    }
+    fetchProducts()
   }, [query])
 
 
@@ -18,7 +21,7 @@ export default function Main({ query }) {
     <Grid >
       <Grid.Row >
         {products.map(product => (
-          <Grid.Column  key={product.id} style={{ marginTop: 20, padding:8 }} computer='5' tablet='8' mobile='16' >
+          <Grid.Column key={product.id} style={{ marginTop: 20, padding: 8 }} computer='5' tablet='8' mobile='16' >
             <ProductCard product={product} />
           </Grid.Column>
         ))}

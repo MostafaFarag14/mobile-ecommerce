@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Grid } from 'semantic-ui-react'
+import { Grid, Dimmer, Loader } from 'semantic-ui-react'
 import { getAllProducts } from '../api/helpers'
 import ProductCard from './ProductCard'
 
@@ -9,11 +9,12 @@ export default function Main({ query }) {
 
   useEffect(() => {
     const fetchProducts = async () => {
-       const data = await getAllProducts(query.toString())
-       setProducts(data)
+      const data = await getAllProducts(query.toString())
+      setProducts(data)
     }
     fetchProducts()
   }, [query])
+
 
 
   return (

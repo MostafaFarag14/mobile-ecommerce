@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Grid, Dimmer, Loader } from 'semantic-ui-react'
+import React, { useEffect, useState } from 'react'
+import { Grid} from 'semantic-ui-react'
 import { getAllProducts } from '../api/helpers'
 import ProductCard from './ProductCard'
 

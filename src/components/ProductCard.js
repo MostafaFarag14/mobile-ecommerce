@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { Card, Header, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { CartContext } from '../contexts/CartContext'
+import { capitalize } from '../api/helpers'
 export default function ProductCard({ product }) {
   const { addProductToCart } = useContext(CartContext)
 
@@ -18,11 +19,11 @@ export default function ProductCard({ product }) {
       <Card.Content>
         <Header textAlign='center' size='small'>{product.title.toUpperCase()}</Header>
         <Card.Meta>
-          <span className='date'>{product.category}</span>
+          <span className='date'>{capitalize(product.category)}</span>
         </Card.Meta>
         <Card.Description style={{ display: 'flex',justifyContent: 'space-between' }}>
-          <Header style={{margin:0}} size='small' >{product.brand}</Header>
-          <Header style={{margin:0}} size='small' color={product.color}>{product.color}</Header>
+          <Header style={{margin:0}} size='small' >{product.internalStorage}</Header>
+          <Header style={{margin:0}} size='small'>{product.ram} RAM</Header>
         </Card.Description>
       </Card.Content>
       <Card.Content textAlign='center' >

@@ -13,9 +13,9 @@ import CheckOut from './pages/CheckOut';
 import Order from './pages/Order';
 import { awakeAPI } from "./api/helpers";
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+// function useQuery() {
+//   return new URLSearchParams(useLocation().search);
+// }
 
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
   useEffect(() => {
     const awake = async () => { return await awakeAPI() }
     awake().then(resp => setLoading(false))
-  }, [query])
+  },[])
 
   return (
     <CartProvider>

@@ -7,7 +7,8 @@ import { capitalize, searchProducts } from '../api/helpers'
 import { CartContext } from '../contexts/CartContext'
 
 const Header = ({ setQuery }) => {
-  const brands = ['adel', 'prima', 'panda']
+  const brands = ['samsung', 'oppo', 'xiaomi','huawei']
+  const categories = ['phones', 'tablets']
   const [search, setSearch] = useState('')
   const [results, setResults] = useState()
 
@@ -27,16 +28,14 @@ const Header = ({ setQuery }) => {
         setResults(formattedResult)
       })
   }
-  const handleItemSelect = () => {
 
-  }
   const { cart } = useContext(CartContext)
   return (
     <div>
       <Menu style={{ padding: 10, boxShadow: '0 2px 5px 0 rgba(0,0,0,.08)' }} compact borderless size='large' attached='top'>
         <Container>
-          <Menu.Item as={Link} to='/' name='Home' />
-          <Menu.Item name='Promotions' onClick={handleItemSelect} />
+          <Menu.Item as={Link} to='/' onClick={() => setQuery('')} name='Home' />
+
           <Dropdown item text='Brands' simple>
             <Dropdown.Menu >
               {brands.map((brand, index) => (
@@ -45,7 +44,14 @@ const Header = ({ setQuery }) => {
             </Dropdown.Menu>
           </Dropdown>
 
-          <Dropdown item text='All' simple>
+          <Dropdown item simple text='Categories'>
+            <Dropdown.Menu>
+              { categories.map( (category , index) => (
+                <Dropdown.Item key={index} text={capitalize(category)} value={category} onClick ={ (e, {value}) => setQuery(`category=${value}`)}/>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+          {/* <Dropdown item text='All' simple>
             <Dropdown.Menu>
               <Dropdown.Item >
                 <Icon name='dropdown' />
@@ -58,7 +64,7 @@ const Header = ({ setQuery }) => {
               </Dropdown.Item>
               <Dropdown.Item>Gifts</Dropdown.Item>
             </Dropdown.Menu>
-          </Dropdown>
+          </Dropdown> */}
 
           <Menu.Menu position='right' >
             <Menu.Item fitted>

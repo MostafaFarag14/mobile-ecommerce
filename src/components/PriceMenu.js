@@ -3,8 +3,8 @@ import { Button, Input } from 'semantic-ui-react'
 import SliderView from 'semantic-ui-react-slider';
 
 export default function PriceMenu({ filter, setFilter }) {
-  const [minSelectedValue, setMinSelectedValue] = useState(0);
-  const [maxSelectedValue, setMaxSelectedValue] = useState(200);
+  const [minSelectedValue, setMinSelectedValue] = useState(100);
+  const [maxSelectedValue, setMaxSelectedValue] = useState(8000);
 
   const onSliderValuesChange = useCallback((minValue, maxValue) => {
     setMinSelectedValue(minValue);
@@ -23,7 +23,7 @@ export default function PriceMenu({ filter, setFilter }) {
       </div>
       <div style={{ margin: '20px 10px', marginTop: 15 }}>
         <SliderView selectedMinValue={minSelectedValue}
-          selectedMaxValue={maxSelectedValue} onSliderValuesChange={onSliderValuesChange} sliderMinValue={0} sliderMaxValue={200} />
+          selectedMaxValue={maxSelectedValue} onSliderValuesChange={onSliderValuesChange} sliderMinValue={100} sliderMaxValue={8000} />
       </div>
       <Button size='tiny' color='teal' style={{ justifySelf: 'flex-end' }} content='APPLY'
 

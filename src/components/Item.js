@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Button, Container, Grid, Header, Card, Input, Image } from 'semantic-ui-react'
-import { getProduct, capitalize } from '../api/helpers'
+import { getProduct, capitalize, extractSpecsFromProduct, convertSnakeCaseToHuman } from '../api/helpers'
 import { CartContext } from '../contexts/CartContext'
 export default function Item() {
   const { id } = useParams()
   const [product, setProduct] = useState()
   const [quantity, setQuantity] = useState(1)
   const { addProductToCart } = useContext(CartContext)
+  let productSpecs
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -16,6 +17,7 @@ export default function Item() {
     }
     fetchProduct()
   }, [id])
+
   const handleClick = (e, data) => {
     addProductToCart(product, quantity)
   }
@@ -25,6 +27,7 @@ export default function Item() {
   }
 
   else {
+    productSpecs = extractSpecsFromProduct(product)
     return (<Grid container style={{
       backgroundColor: 'white',
       margin: 20, borderRadius: '10px', boxShadow: '0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5'
@@ -34,7 +37,7 @@ export default function Item() {
         <Image centered src={product.imageURL} style={{ height: '400px', maxWidth: '50%' }} />
       </Grid.Column>
       <Grid.Column stretched computer='8' mobile='16' >
-        <Card fluid style={{boxShadow: 'none'}}>
+        <Card fluid style={{ boxShadow: 'none' }}>
           <Card.Content>
             <Header>{capitalize(product.title)}</Header>
             <Header color='blue'>{product.price} EGP</Header>
@@ -42,10 +45,11 @@ export default function Item() {
           <Card.Content>
             <h3>Specs:</h3>
             <ul>
-              <li>Brand: {product.brand}</li>
-              <li>Color: {product.color}</li>
-              <li>Category: {product.category}</li>
-              <li>Size: {product.size}</li>
+              {
+                Object.keys(productSpecs).map(key => (
+                  <li key={key}>{convertSnakeCaseToHuman(key)} : {capitalize(productSpecs[key])}</li>
+                ))
+              }
             </ul>
           </Card.Content>
           <Card.Content>

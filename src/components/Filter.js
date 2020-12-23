@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Accordion, Form, Menu } from 'semantic-ui-react'
 import qs from 'qs'
 import PriceMenu from './PriceMenu'
-import { capitalize } from '../api/helpers'
+import { capitalize, convertSnakeCaseToHuman } from '../api/helpers'
 
 
 const Filter = ({ setQuery }) => {
@@ -11,6 +11,8 @@ const Filter = ({ setQuery }) => {
     brand: [],
     category: [],
     color: [],
+    internalStorage: [],
+    ram: [],
     priceFrom: [],
     priceTo: []
   })
@@ -28,7 +30,6 @@ const Filter = ({ setQuery }) => {
           return { [key]: filter[key] }
       })
     });
-    console.log(query)
     setQuery(query)
 
   }, [filter])
@@ -36,9 +37,11 @@ const Filter = ({ setQuery }) => {
   const [activeIndexes, setActiveIndexes] = useState([])
 
   const menu = {
-    color: ['red', 'orange', 'green', 'blue'],
-    brand: ['adel', 'prima', 'panda'],
-    category: ['school products', 'office tools'],
+    color: ['white', 'black', 'red', 'orange', 'green', 'blue'],
+    brand: ['samsung', 'oppo', 'xiaomi','huawei'],
+    internalStorage: ['16 Gb','32 Gb','64 Gb','128 Gb'],
+    ram: ['2 Gb','3 Gb','4 Gb','6 Gb'],
+    category: ['phones', 'tablets'],
     price: []
   }
 
@@ -67,7 +70,7 @@ const Filter = ({ setQuery }) => {
               <Menu.Item key={key}>
                 <Accordion.Title
                   active={activeIndexes.includes(key)}
-                  content={capitalize(key)}
+                  content={convertSnakeCaseToHuman(key)}
                   index={key}
                   onClick={handleClick}
                 />

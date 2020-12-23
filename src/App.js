@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Container, Dimmer, Loader } from 'semantic-ui-react';
+import { Container, Dimmer, Image, Loader, Segment } from 'semantic-ui-react';
 import './App.css';
 import Header from './components/Header'
 import Filter from './components/Filter'
 import Main from './components/Main'
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Item from './components/Item'
 import SortMenu from './components/SortMenu'
 import { CartProvider } from './contexts/CartContext'
@@ -25,7 +25,7 @@ function App() {
   useEffect(() => {
     const awake = async () => { return await awakeAPI() }
     awake().then(resp => setLoading(false))
-  },[])
+  }, [])
 
   return (
     <CartProvider>
@@ -39,9 +39,13 @@ function App() {
                 <div style={{ margin: 10, flex: 1, textAlign: 'right' }}>
                   <SortMenu query={query} setQuery={setQuery} />
                   {loading === true ?
-                    <Dimmer active inverted>
-                      <Loader size='large'>Loading</Loader>
-                    </Dimmer>
+                    <Segment style={{height: '50vh'}}>
+                      <Dimmer active inverted>
+                        <Loader size='big' >Loading</Loader>
+                      </Dimmer>
+                      <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
+                      <Image  src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
+                    </Segment>
                     :
                     <Main query={query} />
                   }

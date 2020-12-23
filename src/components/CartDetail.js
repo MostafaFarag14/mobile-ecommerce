@@ -30,7 +30,7 @@ export default function CartDetail() {
               :
               cart.items.map((product, index) => (
                 <Table.Row key={index}>
-                  <Table.Cell textAlign='center'><img src={product.imageURL} height={50} /></Table.Cell>
+                  <Table.Cell textAlign='center'><img alt={product.title} src={product.imageURL} height={50} /></Table.Cell>
                   <Table.Cell>{product.title}</Table.Cell>
                   <Table.Cell>{product.price}</Table.Cell>
                   <Table.Cell>{product.quantity}</Table.Cell>

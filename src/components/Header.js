@@ -1,23 +1,24 @@
 
 import { useState, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Button, Container, Dropdown, Icon, Label, Menu, Search } from 'semantic-ui-react'
 
 import { capitalize, searchProducts } from '../api/helpers'
 import { CartContext } from '../contexts/CartContext'
 
 const Header = ({ setQuery }) => {
-  const brands = ['samsung', 'oppo', 'xiaomi','huawei']
+  const brands = ['samsung', 'oppo', 'xiaomi', 'huawei']
   const categories = ['phones', 'tablets']
   const [search, setSearch] = useState('')
+  const [rawResults, setRawResults] = useState()
   const [results, setResults] = useState()
-
+  const history = useHistory()
   const handelSearchInputChange = (e, data) => {
     setSearch(data.value)
 
     data.value && searchProducts(data.value)
       .then(result => {
-        console.log(result)
+        setRawResults(result)
         const formattedResult = result.map(product => ({
           "title": product.title,
           "description": product.category,
@@ -27,6 +28,11 @@ const Header = ({ setQuery }) => {
 
         setResults(formattedResult)
       })
+  }
+
+  const openProductPage = (e, data) => {
+    const {id} = rawResults.find(result => result.title === data.result.title)
+    history.push(`/product/${id}`)
   }
 
   const { cart } = useContext(CartContext)
@@ -46,25 +52,12 @@ const Header = ({ setQuery }) => {
 
           <Dropdown item simple text='Categories'>
             <Dropdown.Menu>
-              { categories.map( (category , index) => (
-                <Dropdown.Item key={index} text={capitalize(category)} value={category} onClick ={ (e, {value}) => setQuery(`category=${value}`)}/>
+              {categories.map((category, index) => (
+                <Dropdown.Item key={index} text={capitalize(category)} value={category} onClick={(e, { value }) => setQuery(`category=${value}`)} />
               ))}
             </Dropdown.Menu>
           </Dropdown>
-          {/* <Dropdown item text='All' simple>
-            <Dropdown.Menu>
-              <Dropdown.Item >
-                <Icon name='dropdown' />
-                <span className='text'>Office Tools</span>
-                <Dropdown.Menu>
-                  <Dropdown.Item>Board</Dropdown.Item>
-                  <Dropdown.Item>Calculator</Dropdown.Item>
-                  <Dropdown.Item>Tape</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown.Item>
-              <Dropdown.Item>Gifts</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown> */}
+
 
           <Menu.Menu position='right' >
             <Menu.Item fitted>
@@ -73,6 +66,8 @@ const Header = ({ setQuery }) => {
                 onSearchChange={handelSearchInputChange}
                 value={search}
                 results={results}
+                onResultSelect={openProductPage}
+
               />
             </Menu.Item>
             <Menu.Item>

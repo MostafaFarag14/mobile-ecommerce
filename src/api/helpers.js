@@ -26,7 +26,7 @@ export const getProduct = async (productID) => {
 }
 
 export const searchProducts = (searchInput) => {
-  return fetch(`${apiURL}/products?title_contains=${searchInput}`, {
+  return fetch(`${apiURL}/phones?title_contains=${searchInput}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

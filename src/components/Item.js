@@ -34,7 +34,7 @@ export default function Item() {
     }}>
 
       <Grid.Column computer='8' mobile='16' >
-        <Image centered src={product.imageURL} style={{ height: '400px', maxWidth: '50%' }} />
+        <Image centered src={product.imageURL} style={{ maxHeight: '400px', maxWidth: '50%' }} />
       </Grid.Column>
       <Grid.Column stretched computer='8' mobile='16' >
         <Card fluid style={{ boxShadow: 'none' }}>

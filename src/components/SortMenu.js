@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Dropdown } from 'semantic-ui-react'
-import qs from 'qs'
 export default function SortMenu({ query, setQuery }) {
   const [sortOption, setSortOption] = useState()
   const options = [
